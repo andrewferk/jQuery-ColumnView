@@ -7,21 +7,20 @@
  *
  * Date: Sun Mar 28 05:49:39 2010 -0900
  */
-
 jQuery.fn.mapAttributes = function(prefix) {
-	var maps = [];
-	$(this).each(function() {
-		var map = {};
-		for(var key in this.attributes) {
-			if(!isNaN(key)) {
-				if(!prefix || this.attributes[key].name.substr(0,prefix.length) == prefix) {
-					map[this.attributes[key].name] = this.attributes[key].value;
-				}
-			}
-		}
-		maps.push(map);
-	});
-	return (maps.length > 1 ? maps : maps[0]);
+  var maps = [];
+  $(this).each(function() {
+    var map = {};
+    for(var key in this.attributes) {
+      if(!isNaN(key)) {
+        if(!prefix || this.attributes[key].name.substr(0,prefix.length) == prefix) {
+          map[this.attributes[key].name] = this.attributes[key].value;
+        }
+      }
+    }
+    maps.push(map);
+  });
+  return (maps.length > 1 ? maps : maps[0]);
 };
 
 
@@ -39,18 +38,17 @@ jQuery.fn.mapAttributes = function(prefix) {
  *
  * Dual licensed under MIT and GPL.
  */
-
 (function($) {
   var defaults = {
-  	height:		'100px',	// Height of containerobj
-    multi:      false,		// Allow multiple selections
-    preview:    true,		// Handler for preview pane
-    fixedwidth: false,		// Use fixed width columns
-    useCanvas:  true,		// enable to have columnview generate a canvas arrow to indicate subcategories
-	attrs: [],				// attributes to pull from original items
-	autoFocus: true,		// focus to column onclick
-    getSubtree: undefined,	// callback for getting new data
-    onChange:	undefined	// callback for onclick
+    height:    '100px',     // Height of containerobj
+    multi:      false,      // Allow multiple selections
+    preview:    true,       // Handler for preview pane
+    fixedwidth: false,      // Use fixed width columns
+    useCanvas:  true,       // enable to have columnview generate a canvas arrow to indicate subcategories
+    attrs: [],              // attributes to pull from original items
+    autoFocus: true,        // focus to column onclick
+    getSubtree: undefined,  // callback for getting new data
+    onChange:  undefined    // callback for onclick
   };
 
   // Firefox doesn't repeat keydown events when the key is held, so we use
@@ -97,10 +95,10 @@ jQuery.fn.mapAttributes = function(prefix) {
       var $container = $('<div/>').addClass('containerobj').css({'height':settings.height}).attr({'id':origid + '-columnview-container'}).insertAfter($this);
       var $topdiv    = $('<div class="top"></div>').appendTo($container);
 
-      data = { settings:  settings,    
-               container: $container, 
+      data = { settings:  settings,
+               container: $container,
                origElt:   $this };
-      
+
       $this.data("columnview", data);
       $container.data("columnview", data);
 
@@ -109,7 +107,7 @@ jQuery.fn.mapAttributes = function(prefix) {
 
       /* bind events on the newly created column entries */
       $container.bind("click dblclick " + key_event, methods.handleEvent);
-      
+
       return $this;
     },
 
@@ -143,7 +141,7 @@ jQuery.fn.mapAttributes = function(prefix) {
       // Remove blocks to the right in the tree, and 'deactivate' other
       // links within the same level, if metakey is not being used
       $('div:gt('+level+')', container).remove();
-      
+
       if (metaKey) {
         /* on meta key, toggle selections, and remove nothing */
         if ($self.hasClass('active')) {
@@ -167,7 +165,7 @@ jQuery.fn.mapAttributes = function(prefix) {
         $('div:lt('+level+') a', container).removeClass('active');
 
         $self.addClass('active');
-        
+
         if ($self.hasClass("hasChildMenu")) {
           // Menu has children, so add another submenu
           submenu(container, $self);
@@ -176,19 +174,19 @@ jQuery.fn.mapAttributes = function(prefix) {
         } else {
           // No children, show title instead (if it exists, or a link)          
           if (settings.preview) {
-          	  // If preview, append preview pane
-		      var previewcontainer = $('<div/>').addClass('feature').appendTo(container);
-			  // Fire preview handler function
-			  if ($.isFunction(settings.preview)) {
-				// We're passing the element back to the callback
-				var preview = settings.preview($self);
-			  } else {
-				// If preview is not a function, use a default behavior
-				var title = $('<a/>')
-				  .attr({href: $self.attr('href')})
-				  .text($self.attr('title') ? $self.attr('title') : $self.text());
-				$(previewcontainer).html(title);
-			  }
+            // If preview, append preview pane
+            var previewcontainer = $('<div/>').addClass('feature').appendTo(container);
+            // Fire preview handler function
+            if ($.isFunction(settings.preview)) {
+              // We're passing the element back to the callback
+              var preview = settings.preview($self);
+            } else {
+              // If preview is not a function, use a default behavior
+              var title = $('<a/>')
+                .attr({href: $self.attr('href')})
+                .text($self.attr('title') ? $self.attr('title') : $self.text());
+              $(previewcontainer).html(title);
+            }
           }
           // Set the width
           var remainingspace = 0;
@@ -228,7 +226,7 @@ jQuery.fn.mapAttributes = function(prefix) {
       var container = data.container;
       var origElt   = data.origElt;
       var settings  = data.settings;
-      
+
       if (!attrName) {
         attrName = "name";
       }
@@ -278,13 +276,13 @@ jQuery.fn.mapAttributes = function(prefix) {
         // Handle clicks
         if (event.type == "click") {
           methods.handleClick($self, event.shiftKey, event.metaKey);
-	      if(settings.onChange) settings.onChange(container.find(".active"));
-	      if(settings.autoFocus) container.scrollLeft($self.offsetParent().offset().left);
+          if(settings.onChange) settings.onChange(container.find(".active"));
+          if(settings.autoFocus) container.scrollLeft($self.offsetParent().offset().left);
         }
-		
-		// Handle Keyboard navigation
+
+        // Handle Keyboard navigation
         if (event.type == key_event){
-        	console.log(event.keyCode);
+          console.log(event.keyCode);
           switch (event.keyCode){
           case (37): //left
             $self.parent().prev().children('.inpath').focus().trigger("click");
@@ -374,9 +372,9 @@ jQuery.fn.mapAttributes = function(prefix) {
         }
         
         if(settings.attrs && settings.attrs.length > 0){
-        	$.each(settings.attrs,function(i,attr){
-	        	if($item.attr(attr)) $subitem.attr(attr,$item.attr(attr)).data(attr,$item.attr(attr));
-        	});
+          $.each(settings.attrs,function(i,attr){
+            if($item.attr(attr)) $subitem.attr(attr,$item.attr(attr)).data(attr,$item.attr(attr));
+          });
         }
         
         if (width) {
@@ -395,7 +393,7 @@ jQuery.fn.mapAttributes = function(prefix) {
       origElt.trigger("columnview_select", [$(node)]);
 
     };
-	
+
     var res = settings.getSubtree($(node), $(node).attr("id") == $(origElt).attr("id"));
     /* check if getSubtree returned a deferred promise. */
     if (res && res.promise) {
