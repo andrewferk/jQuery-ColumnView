@@ -40,7 +40,6 @@ jQuery.fn.mapAttributes = function(prefix) {
  */
 (function($) {
   var defaults = {
-    height:    '100px',     // Height of containerobj
     multi:      false,      // Allow multiple selections
     preview:    true,       // Handler for preview pane
     fixedwidth: false,      // Use fixed width columns
@@ -92,7 +91,7 @@ jQuery.fn.mapAttributes = function(prefix) {
       var origid = $this.attr('id');
 
       // Create new top container
-      var $container = $('<div/>').addClass('containerobj').css({'height':settings.height}).attr({'id':origid + '-columnview-container'}).insertAfter($this);
+      var $container = $('<div/>').addClass('containerobj').attr({'id':origid + '-columnview-container'}).insertAfter($this);
       var $topdiv    = $('<div class="top"></div>').appendTo($container);
 
       data = { settings:  settings,
